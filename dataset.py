@@ -16,6 +16,9 @@ def sthv2_image_name_formatter(x):
 def sthv1_image_name_formatter(x):
     return '{:05d}.jpg'.format(x)
 
+def arid_image_name_formatter(x):
+    return '{:06d}.jpg'.format(x)
+
 # 根据数据集的名称、输入类型和文件类型选择合适的文件名格式化方式
 def get_training_data(video_path,
                       annotation_path,
@@ -27,13 +30,15 @@ def get_training_data(video_path,
                       target_transform=None):
     assert dataset_name in [
         'kinetics', 'activitynet', 'ucf101', 'hmdb51', 'mit', 'somethingv2',
-        'somethingv1'
+        'somethingv1', 'arid'
     ]
     assert input_type in ['rgb', 'flow']
     assert file_type in ['jpg', 'hdf5']
     if 'somethingv1' in dataset_name:
         formatter = sthv1_image_name_formatter
     elif 'somethingv2' in dataset_name:
+        formatter = sthv2_image_name_formatter
+    elif 'arid' in dataset_name:
         formatter = sthv2_image_name_formatter
     else:
         formatter = image_name_formatter
@@ -91,7 +96,7 @@ def get_validation_data(video_path,
                         target_transform=None):
     assert dataset_name in [
         'kinetics', 'activitynet', 'ucf101', 'hmdb51', 'mit', 'somethingv2',
-        'somethingv1'
+        'somethingv1', 'arid'
     ]
     assert input_type in ['rgb', 'flow']
     assert file_type in ['jpg', 'hdf5']
@@ -99,6 +104,8 @@ def get_validation_data(video_path,
     if 'somethingv1' in dataset_name:
         formatter = sthv1_image_name_formatter
     elif 'somethingv2' in dataset_name:
+        formatter = sthv2_image_name_formatter
+    elif 'arid' in dataset_name:
         formatter = sthv2_image_name_formatter
     else:
         formatter = image_name_formatter
@@ -154,7 +161,7 @@ def get_inference_data(video_path,
                        temporal_transform=None,
                        target_transform=None):
     assert dataset_name in [
-        'kinetics', 'activitynet', 'ucf101', 'hmdb51', 'mit', 'somethingv2'
+        'kinetics', 'activitynet', 'ucf101', 'hmdb51', 'mit', 'somethingv2', 'arid'
     ]
     assert input_type in ['rgb', 'flow']
     assert file_type in ['jpg', 'hdf5']
