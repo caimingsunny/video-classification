@@ -76,7 +76,6 @@ def convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
 
     count = 0
     for k, v in tqdm.tqdm(dst_data['database'].items()):
-        '''
         if 'label' in v['annotations']:
             label = v['annotations']['label']
         else:
@@ -86,7 +85,6 @@ def convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
         n_frames = get_n_frames(video_path)
         v['annotations']['segment'] = (1, n_frames + 1)
         v['video_path'] = str(video_path)
-        '''
 #        count += 1
 #        if count == 1000:
 #            break
