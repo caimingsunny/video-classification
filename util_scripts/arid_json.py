@@ -57,7 +57,7 @@ def load_labels(class_file_path):
 
 def convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
                             test_txt_path, video_dir_path, dst_json_path):
-    if test_txt_path.exists():
+    if class_file_path.exists():
         labels = load_labels(class_file_path)
     else:
         labels = [str(i) for i in range(11)]
