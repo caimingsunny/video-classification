@@ -39,7 +39,7 @@ def get_training_data(video_path,
     elif 'somethingv2' in dataset_name:
         formatter = sthv2_image_name_formatter
     elif 'arid' in dataset_name:
-        formatter = sthv2_image_name_formatter
+        formatter = arid_image_name_formatter
     else:
         formatter = image_name_formatter
     if file_type == 'jpg':
@@ -106,7 +106,7 @@ def get_validation_data(video_path,
     elif 'somethingv2' in dataset_name:
         formatter = sthv2_image_name_formatter
     elif 'arid' in dataset_name:
-        formatter = sthv2_image_name_formatter
+        formatter = arid_image_name_formatter
     else:
         formatter = image_name_formatter
 
