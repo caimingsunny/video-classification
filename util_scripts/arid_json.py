@@ -97,7 +97,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'dir_path',
-        default='data/ARID',
+        default='data/ARID/list_cvt/split_0',
         type=Path,
         help=('Directory path including moments_categories.txt, '
               'trainingSet.csv, validationSet.csv, '
@@ -108,16 +108,16 @@ if __name__ == '__main__':
                         help=('Path of video directory (jpg).'
                               'Using to get n_frames of each video.'))
     parser.add_argument('dst_path',
-                        default='./',
+                        default='data/ARID/video_jpg',
                         type=Path,
                         help='Path of dst json file.')
 
     args = parser.parse_args()
 
     class_file_path = args.dir_path / 'category.txt'
-    train_txt_path = args.dir_path / 'AID11_split1_train.txt'
-    val_txt_path = args.dir_path / 'AID11_split1_other.txt'
-    test_txt_path = args.dir_path / 'AID11_split1_test.txt'
+    train_txt_path = args.dir_path / 'split0_train.txt'
+    val_txt_path = args.dir_path / 'split0_others.txt'
+    test_txt_path = args.dir_path / 'split0_test.txt'
 #    train_csv_path = args.dir_path / 'train_videofolder.txt'
 #    val_csv_path = args.dir_path / 'val_videofolder.txt'
 #    test_csv_path = args.dir_path / 'test_videofolder.txt'
