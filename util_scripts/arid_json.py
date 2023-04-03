@@ -33,9 +33,9 @@ def convert_txt_to_dict(txt_path, subset):
 
     for line in lines:
         if subset != 'testing':
-            label, video_id = line.split()[1:]
+            label, video_id = line.split()[1:][:-4]
         else:
-            video_id = line.split()[2]
+            video_id = line.split()[2][:-4]
 
         database[video_id] = {}
         database[video_id]['subset'] = subset
@@ -103,7 +103,7 @@ if __name__ == '__main__':
               'trainingSet.csv, validationSet.csv, '
               '(testingSet.csv (optional))'))
     parser.add_argument('video_path',
-        default='data/ARID/video_jpg',
+        default='/mnt/ssd1/yuecong/data/ARID/clips_v1',
                         type=Path,
                         help=('Path of video directory (jpg).'
                               'Using to get n_frames of each video.'))
