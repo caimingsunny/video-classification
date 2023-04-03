@@ -34,9 +34,9 @@ def convert_txt_to_dict(txt_path, subset):
 
     for line in lines:
         if subset != 'testing':
-            label, video_id = lines[0].split()[1], lines[0].split()[2][:-4]
+            label, video_id = lines[0].split()[1], lines[0].split()[2].split('/')[1][:-4]
         else:
-            video_id = line.split()[2][:-4]
+            video_id = line.split()[2].split('/')[1][:-4]
 
         database[video_id] = {}
         database[video_id]['subset'] = subset
