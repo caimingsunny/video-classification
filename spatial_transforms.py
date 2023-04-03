@@ -44,11 +44,13 @@ class Resize(transforms.Resize):
     def randomize_parameters(self):
         pass
 
+'''
 # 按比例缩放输入图像
 class Scale(transforms.Scale):
 
     def randomize_parameters(self):
         pass
+        '''
 
 # 从输入图像中心进行裁剪
 class CenterCrop(transforms.CenterCrop):
