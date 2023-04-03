@@ -25,6 +25,7 @@ def convert_json_to_dict(csv_path, subset):
 
     return database
 
+
 def convert_txt_to_dict(txt_path, subset):
     lines = open(txt_path, 'r').readlines()
     keys = []
@@ -33,7 +34,7 @@ def convert_txt_to_dict(txt_path, subset):
 
     for line in lines:
         if subset != 'testing':
-            label, video_id = line.split()[1:][:-4]
+            label, video_id = lines[0].split()[1], lines[0].split()[2][:-4]
         else:
             video_id = line.split()[2][:-4]
 
@@ -97,18 +98,18 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'dir_path',
-        default='data/ARID/list_cvt/split_0',
+        default='/mnt/ssd1/yuecong/data/ARID/list_cvt/split_0',
         type=Path,
         help=('Directory path including moments_categories.txt, '
               'trainingSet.csv, validationSet.csv, '
               '(testingSet.csv (optional))'))
     parser.add_argument('video_path',
-        default='/mnt/ssd1/yuecong/data/ARID/clips_v1',
+        default='/mnt/ssd1/yuecong/data/ARID/video_jpg',
                         type=Path,
                         help=('Path of video directory (jpg).'
                               'Using to get n_frames of each video.'))
     parser.add_argument('dst_path',
-                        default='data/ARID/video_jpg',
+                        default='/mnt/ssd1/yuecong/data/ARID/video_jpg',
                         type=Path,
                         help='Path of dst json file.')
 
