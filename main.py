@@ -85,10 +85,13 @@ def get_opt():
             print(opt)
             with (opt.result_path / 'opts.json').open('w') as opt_file:
                 json.dump(vars(opt), opt_file, default=json_serial)
+    
+    '''
     else:
         print(opt)
         with (opt.result_path / 'opts.json').open('w') as opt_file:
             json.dump(vars(opt), opt_file, default=json_serial)
+            '''
 
     return opt
 
