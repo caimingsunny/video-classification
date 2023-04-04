@@ -109,7 +109,7 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         print('loading pretrained model {}'.format(pretrain_path))
         pretrain = torch.load(pretrain_path, map_location='cpu')
 
-        model.load_state_dict(pretrain)
+        model.load_state_dict(pretrain) # pretrain['state_dict']
         if is_strg:
             return model
 
@@ -136,6 +136,6 @@ def make_data_parallel(model, is_distributed, device):
             model.to(device)
             model = nn.parallel.DistributedDataParallel(model)
     elif device.type == 'cuda':
-        model = nn.DataParallel(model, device_ids=None).cuda()
+        model = model.cuda() #model = nn.DataParallel(model, device_ids=None).cuda()
 
     return model
