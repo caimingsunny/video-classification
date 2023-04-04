@@ -109,7 +109,7 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         print('loading pretrained model {}'.format(pretrain_path))
         pretrain = torch.load(pretrain_path, map_location='cpu')
 
-        model.load_state_dict(pretrain['dict_keys'])
+        model.load_state_dict(pretrain)
         if is_strg:
             return model
 
