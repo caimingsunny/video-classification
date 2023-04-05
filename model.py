@@ -114,15 +114,17 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         else:
             state_dict = pretrain
 
-        if 'module.' in list(state_dict.keys())[0]:
-            # remove 'module.' prefix from keys if present
+        if next(iter(state_dict)).startswith('module'):
+            model = nn.DataParallel(model)
             state_dict = {k[7:]: v for k, v in state_dict.items()}
 
         model.load_state_dict(state_dict) # pretrain['state_dict']
+        
         if is_strg:
             return model
 
-        tmp_model = model
+        tmp_model = model.module if isinstance(model, nn.DataParallel) else model
+        # tmp_model=model
         if model_name == 'densenet':
             tmp_model.classifier = nn.Linear(tmp_model.classifier.in_features,
                                              n_finetune_classes)
