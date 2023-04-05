@@ -109,7 +109,16 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         print('loading pretrained model {}'.format(pretrain_path))
         pretrain = torch.load(pretrain_path, map_location='cpu')
 
-        model.load_state_dict(pretrain) # pretrain['state_dict']
+        if isinstance(pretrain, dict) and 'state_dict' in pretrain:
+            state_dict = pretrain['state_dict']
+        else:
+            state_dict = pretrain
+
+        if 'module.' in list(state_dict.keys())[0]:
+            # remove 'module.' prefix from keys if present
+            state_dict = {k[7:]: v for k, v in state_dict.items()}
+
+        model.load_state_dict(state_dict) # pretrain['state_dict']
         if is_strg:
             return model
 
