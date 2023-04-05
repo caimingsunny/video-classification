@@ -116,7 +116,6 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
 
         if next(iter(state_dict)).startswith('module'):
             model = nn.DataParallel(model)
-            state_dict = {k[7:]: v for k, v in state_dict.items()}
 
         model.load_state_dict(state_dict) # pretrain['state_dict']
         
