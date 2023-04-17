@@ -118,6 +118,8 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
             model = nn.DataParallel(model)
         
         net_state_keys = list(model.state_dict().keys())
+        print(name for name in state_dict.items())
+        print(model.state_dict().keys())
         for name, param in state_dict.items():
             if name in model.state_dict().keys():
                 dst_param_shape = model.state_dict()[name].shape
