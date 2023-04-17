@@ -126,11 +126,7 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
                     net_state_keys.remove(name)
         # indicating missed keys
         if net_state_keys:
-            num_batches_list = []
-            for i in range(len(net_state_keys)):
-                if 'num_batches_tracked' in net_state_keys[i] or 'nlblock' in net_state_keys[i]:
-                    num_batches_list.append(net_state_keys[i])
-            pruned_additional_states = [x for x in net_state_keys if x not in num_batches_list]
+            pruned_additional_states = [x for x in net_state_keys]
             print(">> Failed to load: {}".format(pruned_additional_states))
 
         model.load_state_dict(state_dict) # pretrain['state_dict']
