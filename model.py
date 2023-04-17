@@ -117,7 +117,20 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         if next(iter(state_dict)).startswith('module'):
             model = nn.DataParallel(model)
 
-        model.load_state_dict(state_dict) # pretrain['state_dict']
+        # model.load_state_dict(state_dict) # pretrain['state_dict']
+        
+        net_state_keys = list(model.state_dict().keys())
+        for name, param in state_dict.items():
+            if name in model.state_dict().keys():
+                dst_param_shape = model.state_dict()[name].shape
+                if param.shape == dst_param_shape:
+                    model.state_dict()[name].copy_(param.view(dst_param_shape))
+                    net_state_keys.remove(name)
+        # indicating missed keys
+        if net_state_keys:
+            pruned_additional_states = [x for x in net_state_keys]
+            print(">> Failed to load: {}".format(pruned_additional_states))
+            break
         
         if is_strg:
             return model
