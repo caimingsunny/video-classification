@@ -117,6 +117,7 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         if next(iter(state_dict)).startswith('module'):
             model = nn.DataParallel(model)
         
+        '''
         net_state_keys = list(model.state_dict().keys())
         print(name for name in state_dict.items())
         print(model.state_dict().keys())
@@ -130,6 +131,7 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         if net_state_keys:
             pruned_additional_states = [x for x in net_state_keys]
             print(">> Failed to load: {}".format(pruned_additional_states))
+            '''
 
         model.load_state_dict(state_dict) # pretrain['state_dict']
         
