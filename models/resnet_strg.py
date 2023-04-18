@@ -146,8 +146,8 @@ class ResNet(nn.Module):
         self.bn1 = nn.BatchNorm3d(self.in_planes)
         self.relu = nn.ReLU(inplace=True)
         
-        # self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding=(0,1,1))
-        # self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1), padding=(1,0,0))
+        # self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding =(0,1,1))
+        # self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1), padding =(1,0,0))
         # self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
         #                                shortcut_type)
         # self.layer2 = self._make_layer(block,
