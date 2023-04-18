@@ -1,10 +1,11 @@
-import math
+# import math
 from functools import partial
 import pdb
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.models as models
+
 
 def get_inplanes():
     return [64, 128, 256, 512]
@@ -30,18 +31,18 @@ def conv1x1x1(in_planes, out_planes, stride=1):
 def conv1x3x3(in_planes, out_planes, stride=1):
     return nn.Conv3d(in_planes,
                      out_planes,
-                     kernel_size=(1,3,3),
+                     kernel_size=(1, 3, 3),
                      stride=stride,
-                     padding=(0,1,1),
+                     padding=(0, 1, 1),
                      bias=False)
 
 
 def conv3x1x1(in_planes, out_planes, stride=1):
     return nn.Conv3d(in_planes,
                      out_planes,
-                     kernel_size=(3,1,1),
+                     kernel_size=(3, 1, 1),
                      stride=stride,
-                     padding=(1,0,0),
+                     padding=(1, 0, 0),
                      bias=False)
 
 
@@ -85,8 +86,10 @@ class Bottleneck(nn.Module):
         super().__init__()
 
         self.conv1 = conv3x1x1(in_planes, planes)
+        # self.conv1 = conv1x1x1(in_planes, planes)
         self.bn1 = nn.BatchNorm3d(planes)
         self.conv2 = conv1x3x3(planes, planes, stride)
+        # self.conv2 = conv3x3x3(planes, planes, stride)
         self.bn2 = nn.BatchNorm3d(planes)
         self.conv3 = conv1x1x1(planes, planes * self.expansion)
         self.bn3 = nn.BatchNorm3d(planes * self.expansion)
@@ -145,9 +148,10 @@ class ResNet(nn.Module):
                                bias=False)
         self.bn1 = nn.BatchNorm3d(self.in_planes)
         self.relu = nn.ReLU(inplace=True)
-        
-        # self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding =(0,1,1))
-        # self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1), padding =(1,0,0))
+        # self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2),
+        # padding =(0,1,1))
+        # self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1),
+        # padding =(1,0,0))
         # self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
         #                                shortcut_type)
         # self.layer2 = self._make_layer(block,
@@ -164,9 +168,7 @@ class ResNet(nn.Module):
         #                                block_inplanes[3],
         #                                layers[3],
         #                                shortcut_type,
-        #                                stride=1)
-
-        
+        #                                stride=1) 
         self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
                                        shortcut_type)
@@ -238,16 +240,22 @@ class ResNet(nn.Module):
         x = self.bn1(x)
         x = self.relu(x)
         if not self.no_max_pool:
-            x = self.maxpool1(x)
+            # x = self.maxpool1(x)
+            x = self.maxpool(x)
 
         x = self.layer1(x)
-        if not self.no_max_pool:
-            x = self.maxpool2(x)
+        # if not self.no_max_pool:
+        #     x = self.maxpool2(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-        return x
 
+        x = self.avgpool(x)  # add
+
+        x = x.view(x.size(0), -1)  # add
+        x = self.fc(x)  # add
+
+        return x
 
     def forward(self, x):
         x = self.conv1(x)
@@ -279,7 +287,6 @@ class ResNet(nn.Module):
                 state_dict[k] = v_2d.unsqueeze(2)
             else:
                 state_dict[k] = v_2d
-
 
 
 def generate_model(model_depth, **kwargs):
@@ -319,9 +326,9 @@ if __name__ == '__main__':
                                     conv1_t_stride=1,
                                     no_max_pool=False,
                                     widen_factor=1.0)
-    model = model#.cuda()
+    model = model  # .cuda()
 
     pdb.set_trace()
-    inputs = torch.rand((4,3,32,224,224))#.cuda()
+    inputs = torch.rand((4, 3, 32, 224, 224))  # .cuda()
     out = model(inputs)
     pdb.set_trace()
