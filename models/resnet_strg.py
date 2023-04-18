@@ -315,7 +315,7 @@ if __name__ == '__main__':
                                     n_classes=174,
                                     n_input_channels=3,
                                     shortcut_type='B',
-                                    conv1_t_size=5,
+                                    conv1_t_size=7,
                                     conv1_t_stride=1,
                                     no_max_pool=False,
                                     widen_factor=1.0)
