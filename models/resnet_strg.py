@@ -45,7 +45,6 @@ def conv3x1x1(in_planes, out_planes, stride=1):
                      bias=False)
 
 
-
 class BasicBlock(nn.Module):
     expansion = 1
 
@@ -125,7 +124,7 @@ class ResNet(nn.Module):
                  layers,
                  block_inplanes,
                  n_input_channels=3,
-                 conv1_t_size=5,
+                 conv1_t_size=7,
                  conv1_t_stride=1,
                  no_max_pool=False,
                  shortcut_type='B',
@@ -146,25 +145,46 @@ class ResNet(nn.Module):
                                bias=False)
         self.bn1 = nn.BatchNorm3d(self.in_planes)
         self.relu = nn.ReLU(inplace=True)
-        self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding=(0,1,1))
-        self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1), padding=(1,0,0))
+        
+        # self.maxpool1 = nn.MaxPool3d(kernel_size=(1,3,3), stride=(1,2,2), padding=(0,1,1))
+        # self.maxpool2 = nn.MaxPool3d(kernel_size=(3,1,1), stride=(2,1,1), padding=(1,0,0))
+        # self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
+        #                                shortcut_type)
+        # self.layer2 = self._make_layer(block,
+        #                                block_inplanes[1],
+        #                                layers[1],
+        #                                shortcut_type,
+        #                                stride=(1,2,2))
+        # self.layer3 = self._make_layer(block,
+        #                                block_inplanes[2],
+        #                                layers[2],
+        #                                shortcut_type,
+        #                                stride=(1,2,2))
+        # self.layer4 = self._make_layer(block,
+        #                                block_inplanes[3],
+        #                                layers[3],
+        #                                shortcut_type,
+        #                                stride=1)
+
+        
+        self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
                                        shortcut_type)
         self.layer2 = self._make_layer(block,
                                        block_inplanes[1],
                                        layers[1],
                                        shortcut_type,
-                                       stride=(1,2,2))
+                                       stride=2)
         self.layer3 = self._make_layer(block,
                                        block_inplanes[2],
                                        layers[2],
                                        shortcut_type,
-                                       stride=(1,2,2))
+                                       stride=2)
         self.layer4 = self._make_layer(block,
                                        block_inplanes[3],
                                        layers[3],
                                        shortcut_type,
-                                       stride=1)
+                                       stride=2)
 
         self.avgpool = nn.AdaptiveAvgPool3d((1, 1, 1))
         self.fc = nn.Linear(block_inplanes[3] * block.expansion, n_classes)
