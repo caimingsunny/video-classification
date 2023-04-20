@@ -1,16 +1,14 @@
 import argparse
 import json
 from pathlib import Path
-
-import pandas as pd
-
+# import pandas as pd
 from utils import get_n_frames
-import pdb
+# import pdb
 import tqdm
-import json
+
 
 def convert_json_to_dict(csv_path, subset):
-    lines = json.load(open(csv_path,'r'))
+    lines = json.load(open(csv_path, 'r'))
     database = {}
 
     for line in lines:
@@ -18,7 +16,7 @@ def convert_json_to_dict(csv_path, subset):
         database[video_id] = {}
         database[video_id]['subset'] = subset
         if subset != 'testing':
-            label = line['template'].replace('[','').replace(']','')
+            label = line['template'].replace('[', '').replace(']' '')
             database[video_id]['annotations'] = {'label': label}
         else:
             database[video_id]['annotations'] = {}
@@ -28,13 +26,13 @@ def convert_json_to_dict(csv_path, subset):
 
 def convert_txt_to_dict(txt_path, subset):
     lines = open(txt_path, 'r').readlines()
-    keys = []
-    key_labels = []
+    # keys = []
+    # key_labels = []
     database = {}
 
     for line in lines:
         if subset != 'testing':
-            label, video_id = lines[0].split()[1], lines[0].split()[2][:-4]
+            label, video_id = line.split()[1], line.split()[2][:-4]
         else:
             video_id = line.split()[2][:-4]
 
@@ -57,7 +55,7 @@ def load_labels(class_file_path):
 
 
 def convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
-                            test_txt_path, video_dir_path, dst_json_path):
+                             test_txt_path, video_dir_path, dst_json_path):
     if class_file_path.exists():
         labels = load_labels(class_file_path)
     else:
@@ -80,7 +78,7 @@ def convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
         if 'label' in v['annotations']:
             label = v['annotations']['label']
         else:
-            label = 'test'
+            label = 'testing'
 
         video_path = video_dir_path / k
         n_frames = get_n_frames(video_path)
@@ -109,7 +107,7 @@ if __name__ == '__main__':
                         help=('Path of video directory (jpg).'
                               'Using to get n_frames of each video.'))
     parser.add_argument('dst_path',
-                        default='/mnt/ssd1/yuecong/data/ARID/video_jpg',
+                        default='/mnt/ssd1/yuecong/data/ARID/video_jpg/arid.json',
                         type=Path,
                         help='Path of dst json file.')
 
@@ -124,4 +122,4 @@ if __name__ == '__main__':
 #    test_csv_path = args.dir_path / 'test_videofolder.txt'
 
     convert_arid_txt_to_json(class_file_path, train_txt_path, val_txt_path,
-                            test_txt_path, args.video_path, args.dst_path)
+                             test_txt_path, args.video_path, args.dst_path)

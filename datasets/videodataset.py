@@ -67,7 +67,6 @@ class VideoDataset(data.Dataset):
             data = json.load(f)
         video_ids, video_paths, annotations = get_database(
             data, subset, root_path, video_path_formatter)
-        print(video_ids, len(video_ids))
         class_to_idx = get_class_labels(data)
         idx_to_class = {}
         for name, label in class_to_idx.items():
