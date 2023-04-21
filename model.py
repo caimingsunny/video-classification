@@ -138,8 +138,8 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
         if is_strg:
             return model
 
-        tmp_model = model.module if isinstance(model, nn.DataParallel) else model
-        # tmp_model=model
+        # tmp_model = model.module if isinstance(model, nn.DataParallel) else model
+        tmp_model=model
         if model_name == 'densenet':
             tmp_model.classifier = nn.Linear(tmp_model.classifier.in_features,
                                              n_finetune_classes)
