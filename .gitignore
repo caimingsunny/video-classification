@@ -89,4 +89,7 @@ __pycache__/
    # miscellaneous output files 
  *.out 
  *.json
- kinetics-res50.pth
+kinetics-res50.pth
+r3d50_K_200ep.pth
+resnet-50-kinetics.pth
+resnet_strg_imgnet_32_gcn/
