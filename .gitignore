@@ -17,7 +17,9 @@ __pycache__/
  sdist/ 
  var/ 
  wheels/ 
- wandb/
+ wandb-*
+ events.out*
+ debug*
  *.egg-info/ 
  .installed.cfg 
  *.egg 
