@@ -49,11 +49,13 @@ def train_epoch(epoch,
     accuracies = AverageMeter()
 
     end_time = time.time()
-    if torch.cuda.is_available():
-        device = torch.cuda.current_device()
-        print(f"Using GPU: {torch.cuda.get_device_name(device)}")
-    else:
-        print("No GPU available, using CPU instead.")
+
+    # if torch.cuda.is_available():
+    #     device = torch.cuda.current_device()
+    #     print(f"Using GPU: {torch.cuda.get_device_name(device)}")
+    # else:
+    #     print("No GPU available, using CPU instead.")
+    
     for i, (inputs, targets) in enumerate(data_loader):
         inputs = inputs.to(device, non_blocking=True)
         data_time.update(time.time() - end_time)

@@ -358,10 +358,10 @@ def main_worker(index, opt):
     np.random.seed(opt.manual_seed)
     torch.manual_seed(opt.manual_seed)
 
-    print('!!!')
-    print(opt.device.type)
-    print(opt.device)
-    print(index)
+    # print('!!!')
+    # print(opt.device.type)
+    # print(opt.device)
+    # print(index)
 
     if index >= 0 and opt.device.type == 'cuda':
 #        opt.device = torch.device(f'cuda:{index}')
@@ -505,4 +505,4 @@ if __name__ == '__main__':
         opt.world_size = opt.ngpus_per_node * opt.world_size
         mp.spawn(main_worker, nprocs=opt.ngpus_per_node, args=(opt,))
     else:
-        main_worker(-1, opt)
+        main_worker(7, opt)
