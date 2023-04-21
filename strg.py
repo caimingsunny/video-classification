@@ -53,7 +53,7 @@ class STRG(nn.Module):
         self.roi_align = RoIAlign((roi_size,roi_size), 1/8, -1, aligned=True) # 将给定的 ROIs 对应到 CNN 的特征图上
 
     def extract_feature(self, x):
-        return self.base_model.extract_feature(x)
+        return self.base_model.module.extract_feature(x)
         # 返回 base_model 的特征提取器提取的特征
 
 #        x = self.base_model.conv1(x)
