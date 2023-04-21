@@ -361,7 +361,7 @@ def main_worker(index, opt):
     if index >= 0 and opt.device.type == 'cuda':
 #        opt.device = torch.device(f'cuda:{index}')
         opt.device = torch.device('cuda:{}'.format(index))
-        print(opt.device)
+        print('\n!!!'+opt.device)
 
     # 确定是否在分布式环境下运行，初始化
     if opt.distributed:
