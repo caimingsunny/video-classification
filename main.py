@@ -369,6 +369,7 @@ def main_worker(index, opt):
 
     # 确定是否在分布式环境下运行，初始化
     if opt.distributed:
+        print('!!!')
         opt.dist_rank = opt.dist_rank * opt.ngpus_per_node + index
         dist.init_process_group(backend='nccl',
                                 init_method=opt.dist_url,

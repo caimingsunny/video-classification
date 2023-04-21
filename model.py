@@ -152,7 +152,6 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
 # 用多个 GPU 进行训练
 def make_data_parallel(model, is_distributed, device):
     if is_distributed:
-        print('!!! is distribute')
         if device.type == 'cuda' and device.index is not None:
             torch.cuda.set_device(device)
             model.to(device)
