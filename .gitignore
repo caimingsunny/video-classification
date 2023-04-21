@@ -88,4 +88,5 @@ __pycache__/
  *.pth 
    # miscellaneous output files 
  *.out 
+ *.json
  kinetics-res50.pth
