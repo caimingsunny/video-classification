@@ -361,7 +361,8 @@ def main_worker(index, opt):
     print('!!!')
     print('device type = ' + opt.device.type)
     print('device = ' + opt.device)
-    print('index + ' = index)
+    print('index = ' + index)
+
     if index >= 0 and opt.device.type == 'cuda':
 #        opt.device = torch.device(f'cuda:{index}')
         opt.device = torch.device('cuda:{}'.format(index))
