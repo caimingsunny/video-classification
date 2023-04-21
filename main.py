@@ -199,14 +199,14 @@ def get_train_utils(opt, model_parameters):
                                                num_workers=opt.n_threads,
                                                pin_memory=True,
                                                sampler=train_sampler,
-                                               worker_init_fn=worker_init_fn) # utils.py
+                                               worker_init_fn=worker_init_fn)
 
     # 输入参数 opt 中的各种参数创建优化器和学习率调度器
     if opt.is_master_node:
         # 将模型训练过程中的指标记录到文件中
-        train_logger = Logger(opt.result_path / 'train.log', # utils.py
+        train_logger = Logger(opt.result_path / 'train.log',  # utils.py
                               ['epoch', 'loss', 'acc', 'lr'])
-        train_batch_logger = Logger( # utils.py
+        train_batch_logger = Logger(  # utils.py
             opt.result_path / 'train_batch.log',
             ['epoch', 'batch', 'iter', 'loss', 'acc', 'lr'])
     else:
@@ -361,6 +361,7 @@ def main_worker(index, opt):
     if index >= 0 and opt.device.type == 'cuda':
 #        opt.device = torch.device(f'cuda:{index}')
         opt.device = torch.device('cuda:{}'.format(index))
+        print(opt.device)
 
     # 确定是否在分布式环境下运行，初始化
     if opt.distributed:
