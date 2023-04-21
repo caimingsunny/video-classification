@@ -445,7 +445,7 @@ def main_worker(index, opt):
             project='strg',
             name=name,
             config=opt,
-            dir= name,
+            dir=name,
 #            resume=str(opt.resume_path) != '',
             sync_tensorboard=True)
 
