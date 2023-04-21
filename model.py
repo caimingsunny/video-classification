@@ -151,17 +151,17 @@ def load_pretrained_model(model, pretrain_path, model_name, n_finetune_classes,
 
 # 用多个 GPU 进行训练
 def make_data_parallel(model, is_distributed, device):
-    if is_distributed:
-        if device.type == 'cuda' and device.index is not None:
-            torch.cuda.set_device(device)
-            model.to(device)
+    # if is_distributed:
+    #     if device.type == 'cuda' and device.index is not None:
+    #         torch.cuda.set_device(device)
+    #         model.to(device)
 
-            model = nn.parallel.DistributedDataParallel(model,
-                                                        device_ids=[device])
-        else:
-            model.to(device)
-            model = nn.parallel.DistributedDataParallel(model)
-    elif device.type == 'cuda':
-        model = model.cuda() #model = nn.DataParallel(model, device_ids=None).cuda()
-
+    #         model = nn.parallel.DistributedDataParallel(model,
+    #                                                     device_ids=[device])
+    #     else:
+    #         model.to(device)
+    #         model = nn.parallel.DistributedDataParallel(model)
+    # elif device.type == 'cuda':
+    #     model = model.cuda() #model = nn.DataParallel(model, device_ids=None).cuda()
+    model = model.cuda()
     return model

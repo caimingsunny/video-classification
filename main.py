@@ -369,7 +369,6 @@ def main_worker(index, opt):
 
     # 确定是否在分布式环境下运行，初始化
     if opt.distributed:
-        print('!!!')
         opt.dist_rank = opt.dist_rank * opt.ngpus_per_node + index
         dist.init_process_group(backend='nccl',
                                 init_method=opt.dist_url,
@@ -389,19 +388,19 @@ def main_worker(index, opt):
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
     if opt.pretrain_path:
         model = load_pretrained_model(model, opt.pretrain_path, opt.model,
-                                      opt.n_finetune_classes, opt.strg) # model.py
+                                      opt.n_finetune_classes, opt.strg)  # model.py
     if opt.strg:
         # 构建整个视频动作识别模型
-        model = STRG(model, nclass=opt.n_classes, nrois=opt.nrois) # strg.py
-        rpn = RPN(nrois=opt.nrois) # rpn.py 候选框
-        rpn = make_data_parallel(rpn, opt.distributed, opt.device) # model.py 用多个 GPU 进行训练
+        model = STRG(model, nclass=opt.n_classes, nrois=opt.nrois)  # strg.py
+        rpn = RPN(nrois=opt.nrois)  # rpn.py 候选框
+        rpn = make_data_parallel(rpn, opt.distributed, opt.device)  # model.py 用多个 GPU 进行训练
     else:
         rpn = None
 
     if opt.resume_path is not None:
         model = resume_model(opt.resume_path, opt.arch, model)
 
-    model = make_data_parallel(model, opt.distributed, opt.device) # model.py
+    model = make_data_parallel(model, opt.distributed, opt.device)  # model.py
 
 #    if opt.pretrain_path:
 #        parameters = get_fine_tuning_parameters(model, opt.ft_begin_module) # model.py
