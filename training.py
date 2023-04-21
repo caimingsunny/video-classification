@@ -66,6 +66,7 @@ def train_epoch(epoch,
                 decrased.
             '''
             N, C, T, H, W = inputs.size()
+            print(inputs.size())
             if i == 0:
                 max_N = N
             # sample frames for RPN
