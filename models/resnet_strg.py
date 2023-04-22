@@ -168,7 +168,7 @@ class ResNet(nn.Module):
         #                                block_inplanes[3],
         #                                layers[3],
         #                                shortcut_type,
-        #                                stride=1) 
+        #                                stride=1)
         self.maxpool = nn.MaxPool3d(kernel_size=3, stride=2, padding=1)
         self.layer1 = self._make_layer(block, block_inplanes[0], layers[0],
                                        shortcut_type)
@@ -250,11 +250,6 @@ class ResNet(nn.Module):
         x = self.layer3(x)
         x = self.layer4(x)
 
-        x = self.avgpool(x)  # add
-
-        x = x.view(x.size(0), -1)  # add
-        x = self.fc(x)  # add
-
         return x
 
     def forward(self, x):
@@ -262,11 +257,12 @@ class ResNet(nn.Module):
         x = self.bn1(x)
         x = self.relu(x)
         if not self.no_max_pool:
-            x = self.maxpool1(x)
+            # x = self.maxpool1(x)
+            x = self.maxpool(x)
 
         x = self.layer1(x)
-        if not self.no_max_pool:
-            x = self.maxpool2(x)
+        # if not self.no_max_pool:
+        #     x = self.maxpool2(x)
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)

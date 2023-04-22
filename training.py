@@ -1,10 +1,8 @@
 import torch
 import time
-import os
-import sys
-import pdb
-
-import torch
+# import os
+# import sys
+# import pdb
 import torch.distributed as dist
 import torch.nn as nn
 
@@ -55,7 +53,7 @@ def train_epoch(epoch,
     #     print(f"Using GPU: {torch.cuda.get_device_name(device)}")
     # else:
     #     print("No GPU available, using CPU instead.")
-    
+
     for i, (inputs, targets) in enumerate(data_loader):
         inputs = inputs.to(device, non_blocking=True)
         data_time.update(time.time() - end_time)
@@ -66,20 +64,20 @@ def train_epoch(epoch,
                 decrased.
             '''
             N, C, T, H, W = inputs.size()
-            print(inputs.size())
+            # print(inputs.size())
             if i == 0:
                 max_N = N
             # sample frames for RPN
-            sample = torch.arange(0,T,det_interval)
-            rpn_inputs = inputs[:,:,sample].transpose(1,2).contiguous()
-            rpn_inputs = rpn_inputs.view(-1,C,H,W)
+            sample = torch.arange(0, T, det_interval)
+            rpn_inputs = inputs[:, :, sample].transpose(1, 2).contiguous()
+            rpn_inputs = rpn_inputs.view(-1, C, H, W)
             if len(inputs) < max_N:
                 print("Modified from {} to {}".format(len(inputs), max_N))
                 while len(rpn_inputs) < max_N * (T // det_interval):
                     rpn_inputs = torch.cat((rpn_inputs, rpn_inputs[:(max_N-len(inputs))*(T//det_interval)]))
             with torch.no_grad():
                 proposals = rpn(rpn_inputs)
-            proposals = proposals.view(-1,T//det_interval,nrois,4)
+            proposals = proposals.view(-1, T//det_interval, nrois, 4)
             if len(inputs) < max_N:
                 proposals = proposals[:len(inputs)]
             outputs = model(inputs, proposals.detach())
