@@ -91,7 +91,7 @@ class STRG(nn.Module):  # 构建整个视频动作识别模型
         print('rois_features.shape', rois_features.shape)
         rois_features = self.max_pool(rois_features)
         print('rois_features.shape', rois_features.shape)
-        rois_features = rois_features.view(N, T, self.nrois, C)
+        rois_features = rois_features.view(N, T, 80, C) # self.nrois
 
         # 将ROIs和特征张量进行ROI对齐和最大池化，然后重新调整形状
         gcn_features = self.strg_gcn(rois_features, rois)
