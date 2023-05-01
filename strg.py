@@ -78,20 +78,20 @@ class STRG(nn.Module):  # 构建整个视频动作识别模型
         # 将ROIs张量重新调整形状，以适应后续处理
         rois_list = rois.view(-1, self.nrois, 4)
         rois_list = [r for r in rois_list]
-        print('len rois list', len(rois_list))
-        print('rois list 0 shape', rois_list[0].shape)
-        print('self.nrois', self.nrois)
+        # print('len rois list', len(rois_list))
+        # print('rois list 0 shape', rois_list[0].shape)
+        # print('self.nrois', self.nrois)
 
         # 将特征张量进行转置和重新调整形状
         features = features.transpose(1, 2).contiguous().view(N*T, C, H, W)
-        print('features.shape', features.shape)
-        print('N, C, T, H, W', N, C, T, H, W)
+        # print('features.shape', features.shape)
+        # print('N, C, T, H, W', N, C, T, H, W)
         # 将ROIs和特征张量进行ROI对齐和最大池化，然后重新调整形状
         rois_features = self.roi_align(features, rois_list)
-        print('rois_features.shape', rois_features.shape)
+        # print('rois_features.shape', rois_features.shape)
         rois_features = self.max_pool(rois_features)
-        print('rois_features.shape', rois_features.shape)
-        print('rois_features.view(N, T, self.nrois, C)', rois_features.view(N, T, self.nrois, C))
+        # print('rois_features.shape', rois_features.shape)
+        # print('rois_features.view(N, T, self.nrois, C)', rois_features.view(N, T, self.nrois, C))
         rois_features = rois_features.view(640, 512, 1, 1) #(N, T, self.nrois, C)
 
         # 将ROIs和特征张量进行ROI对齐和最大池化，然后重新调整形状
