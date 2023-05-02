@@ -80,8 +80,8 @@ def train_epoch(epoch,
             proposals = proposals.view(-1, T//det_interval, nrois, 4)
             if len(inputs) < max_N:
                 proposals = proposals[:len(inputs)]
-            proposals_d = proposals.detach()
-            outputs = model(inputs, proposals_d)
+            # proposals_d = proposals.detach()
+            outputs = model(inputs, proposals)
             # update to the largest batch_size
             max_N = max(N, max_N)
         else:
