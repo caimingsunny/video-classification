@@ -4,6 +4,7 @@ import argparse
 
 from pathlib import Path
 
+
 def parse_opts():
     parser = argparse.ArgumentParser()
     parser.add_argument('--root_path',

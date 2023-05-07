@@ -81,9 +81,14 @@ def train_epoch(epoch,
             if len(inputs) < max_N:
                 proposals = proposals[:len(inputs)]
             # proposals_d = proposals.detach()
+            # print('inputs', inputs)
+            # print('proposals', proposals)
+            print(1)
             outputs = model(inputs, proposals)
+            print(2)
             # update to the largest batch_size
             max_N = max(N, max_N)
+            print(3)
         else:
             outputs = model(inputs)
         loss = criterion(outputs, targets)
@@ -98,6 +103,7 @@ def train_epoch(epoch,
 
         batch_time.update(time.time() - end_time)
         end_time = time.time()
+        print(4)
 
         if batch_logger is not None:
             batch_logger.log({

@@ -109,23 +109,30 @@ class RGCN(torch.nn.Module):
 
     def forward(self, rois_features, rois):
         # 构建gcn
+        print(rois.shape)
         front_graph, back_graph = get_st_graph(rois)
+        print(111)
 
         front_graph = front_graph.to(rois.device).detach()
         back_graph = back_graph.to(rois.device).detach()
 
+        print(222)
         B, T, N, C = rois_features.size()
         N_rois = T*N
         rois_features = rois_features.view(B, N_rois, -1)
+
+        print(333)
         sim_graph = self.sim_graph(rois_features).detach()
         # similarity graph
         sim_gcn = self.sim_GCN(rois_features, sim_graph)
         # spatial temporal graph
         st_gcn = self.st_GCN(rois_features, front_graph, back_graph)
         # combine graphs
+        print(444)
         gcn_out = sim_gcn + st_gcn
         gcn_out = gcn_out.mean(1)
         gcn_out = self.dropout(gcn_out)
+        print(555)
         return gcn_out
 
 

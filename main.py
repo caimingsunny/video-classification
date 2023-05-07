@@ -12,7 +12,7 @@ import torch.multiprocessing as mp
 import torch.distributed as dist
 from torch.backends import cudnn
 import torchvision
-from torchvision.models.detection import fasterrcnn_resnet50_fpn
+# from torchvision.models.detection import fasterrcnn_resnet50_fpn
 
 from opts import parse_opts
 from model import (generate_model, load_pretrained_model, make_data_parallel,
@@ -457,8 +457,8 @@ def main_worker(index, opt):
             if opt.distributed:
                 train_sampler.set_epoch(i)
             # 获取一个优化器中的学习率
-            current_lr = get_lr(optimizer) # utils.py
-            train_epoch(i, train_loader, model, criterion, optimizer, # training.py
+            current_lr = get_lr(optimizer)  # utils.py
+            train_epoch(i, train_loader, model, criterion, optimizer,  # training.py
                         opt.device, current_lr, train_logger,
                         train_batch_logger, tb_writer, opt.distributed,rpn=rpn,
                         det_interval=opt.det_interval, nrois=opt.nrois)
@@ -469,7 +469,7 @@ def main_worker(index, opt):
                                 scheduler)
 
         if not opt.no_val:
-            prev_val_loss = val_epoch(i, val_loader, model, criterion, # validation.py
+            prev_val_loss = val_epoch(i, val_loader, model, criterion,  # validation.py
                                       opt.device, val_logger, tb_writer,
                                       opt.distributed, rpn=rpn,
                                     det_interval=opt.det_interval, nrois=opt.nrois)

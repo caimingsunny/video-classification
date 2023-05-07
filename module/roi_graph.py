@@ -25,23 +25,47 @@ def get_iou(roi, rois, area, areas) :
 
 
 def get_st_graph(rois, threshold=0):
+    print(1111)
     B, T, N, _ = rois.size()
 
     M = T*N
-    front_graph = torch.zeros((B,M,M))
+    front_graph = torch.zeros((B,M,M), device="cuda")
+    print(B,M,N)
 
+    print(2222)
     if M ==0 :
         return front_graph, front_graph.transpoes(1,2)
     areas = (rois[:,:,:,3] - rois[:,:,:,1] + 1) * (rois[:,:,:,2] - rois[:,:,:,0] + 1)
 
+    print(3333)
+    #print(front_graph.shape, type(front_graph))
     for t in range(T-1):
+        print('t', t)
         for i in range(N):
+            print('i', i)
             ious = get_iou(rois[:,t,i], rois[:,t+1], areas[:,t,i:i+1], areas[:,t+1])
+            #ious = torch.randn(4,10).cuda()
+            #ious = torch.randn(4,10)
+            print('ious', ious.shape, type(ious))
+            #print('threshold', threshold)
+            # print(ious)
             ious[ious < threshold] = 0
+            #print(ious.cpu())
+            #exit(1)
+            #print(front_graph[:, t*N+i, (t+1)*N:(t+2)*N].shape, ious.shape)
+            #print(front_graph[:, t*N+i, (t+1)*N:(t+2)*N].type(), ious.type())
+            #print(front_graph)
+            #ious = ious.contiguous()
+            # front_graph[0,0,0]=1.0
+            #print(front_graph[:, t*N+i, (t+1)*N:(t+2)*N])
             front_graph[:, t*N+i, (t+1)*N:(t+2)*N] = ious
+            #print(front_graph[:, t*N+i, (t+1)*N:(t+2)*N])
+            #exit(1)
 
+    print(4444)
     back_graph = front_graph.transpose(1,2)
 
+    print(5555)
     # Normalize
     front_graph = front_graph / front_graph.sum(dim=-1, keepdim=True)
     back_graph = back_graph / back_graph.sum(dim=-1, keepdim=True)
@@ -49,6 +73,7 @@ def get_st_graph(rois, threshold=0):
     front_graph[front_graph != front_graph] = 0
     back_graph[back_graph != back_graph] = 0
 
+    print(6666)
     return front_graph, back_graph
 
 
