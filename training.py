@@ -55,22 +55,29 @@ def train_epoch(epoch,
     #     print("No GPU available, using CPU instead.")
 
     for i, (inputs, targets) in enumerate(data_loader):
+        print('i', i)
         inputs = inputs.to(device, non_blocking=True)
         data_time.update(time.time() - end_time)
         targets = targets.to(device, non_blocking=True)
+        print(0)
         if rpn is not None:
             '''
                 There was an unexpected CUDNN_ERROR when len(rpn_inputs) is
                 decrased.
             '''
             N, C, T, H, W = inputs.size()
+            print('01')
             # print(inputs.size())
             if i == 0:
                 max_N = N
             # sample frames for RPN
+            print('02')
             sample = torch.arange(0, T, det_interval)
+            print('03')
             rpn_inputs = inputs[:, :, sample].transpose(1, 2).contiguous()
+            print('04')
             rpn_inputs = rpn_inputs.view(-1, C, H, W)
+            print('05')
             if len(inputs) < max_N:
                 print("Modified from {} to {}".format(len(inputs), max_N))
                 while len(rpn_inputs) < max_N * (T // det_interval):
@@ -78,6 +85,7 @@ def train_epoch(epoch,
             with torch.no_grad():
                 proposals = rpn(rpn_inputs)
             proposals = proposals.view(-1, T//det_interval, nrois, 4)
+            print('06')
             if len(inputs) < max_N:
                 proposals = proposals[:len(inputs)]
             # proposals_d = proposals.detach()
@@ -99,16 +107,16 @@ def train_epoch(epoch,
         
         loss = criterion(outputs, targets)
         print(5)
-        acc = calculate_accuracy(outputs, targets)
+        # acc = calculate_accuracy(outputs, targets)
 
         print(6)
-        losses.update(loss.item(), inputs.size(0))
+        # losses.update(loss.item(), inputs.size(0))
         print(7)
-        accuracies.update(acc, inputs.size(0))
+        # accuracies.update(acc, inputs.size(0))
 
         print(8)
         optimizer.zero_grad()
-        loss.backward()
+        # loss.backward()
         optimizer.step()
 
         print(9)
@@ -137,6 +145,8 @@ def train_epoch(epoch,
                                                             data_time=data_time,
                                                             loss=losses,
                                                             acc=accuracies))
+
+    print(11)
 
     if distributed:
         loss_sum = torch.tensor([losses.sum],
