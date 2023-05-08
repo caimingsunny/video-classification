@@ -91,20 +91,31 @@ def train_epoch(epoch,
             print(3)
         else:
             outputs = model(inputs)
+        
+        print(4)
+        # print(torch.cuda.is_available())
+        # print(torch.cuda.device_count())
+        # print(torch.cuda.current_device())
+        
         loss = criterion(outputs, targets)
+        print(5)
         acc = calculate_accuracy(outputs, targets)
 
+        print(6)
         losses.update(loss.item(), inputs.size(0))
+        print(7)
         accuracies.update(acc, inputs.size(0))
 
+        print(8)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
 
+        print(9)
         batch_time.update(time.time() - end_time)
         end_time = time.time()
-        print(4)
 
+        print(10)
         if batch_logger is not None:
             batch_logger.log({
                 'epoch': epoch,

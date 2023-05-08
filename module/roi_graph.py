@@ -39,10 +39,10 @@ def get_st_graph(rois, threshold=0):
 
     print(3333)
     #print(front_graph.shape, type(front_graph))
-    for t in range(T-1):
+    for t in range(2): #(T-1):
         print('t', t)
         for i in range(N):
-            print('i', i)
+            #print('i', i)
             ious = get_iou(rois[:,t,i], rois[:,t+1], areas[:,t,i:i+1], areas[:,t+1])
             #ious = torch.randn(4,10).cuda()
             #ious = torch.randn(4,10)
